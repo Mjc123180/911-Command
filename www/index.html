@@ -51,7 +51,7 @@ function travel(d,target,mode){const start=nearest(d.x,d.y);d.at=start;d.path=ro
 function randomDestination(d){let target=node(rnd(4),rnd(4));while(target.a===d.at.a&&target.b===d.at.b)target=node(rnd(4),rnd(4));travel(d,target,d.civilian?'traffic':'patrol')}
 traffic.forEach(randomDestination);
 function moveDriver(d,dt){if(d.mode==='station'||d.mode==='scene')return;if(d.wait>0){d.wait-=dt;return}
-if(!d.path.length||d.index>=d.path.length-1){if(d.mode==='respond'){d.mode='scene';const inc=d.incident;if(inc&&incidents.some(x=>x.id===inc.id)){log(d.unit.id+' arrived at '+locations[inc.loc][0]);if(d.unit.type===inc.need){incidents=incidents.filter(x=>x.id!==inc.id);resolved++;log('Incident resolved: '+inc.title);if(selectedIncident===inc.id){selectedIncident=null;$('detail').textContent='Incident resolved';$('description').textContent='Select another active call.'}}else log('Additional '+inc.need+' unit required');render()}d.unit.busy=false;return}
+if(!d.path.length||d.index>=d.path.length-1){if(d.mode==='respond'){d.mode='scene';const inc=d.incident;if(inc&&incidents.some(x=>x.id===inc.id)){log(d.unit.id+' arrived at '+locations[inc.loc][0]);if(d.unit.type===inc.need||(inc.need==='EMS'&&['Fire','Police','SWAT','Detective'].includes(d.unit.type))){incidents=incidents.filter(x=>x.id!==inc.id);resolved++;log('Incident resolved: '+inc.title);if(selectedIncident===inc.id){selectedIncident=null;$('detail').textContent='Incident resolved';$('description').textContent='Select another active call.'}}else log('Additional '+inc.need+' unit required');render()}d.unit.busy=false;return}
 if(d.mode==='return'){d.mode='station';d.unit.busy=false;render();return}
 d.at=d.path[d.path.length-1]||d.at;randomDestination(d);d.wait=.3+Math.random()*.6;return}
 const from=d.path[d.index],to=d.path[d.index+1],length=Math.hypot(to.x-from.x,to.y-from.y);
@@ -71,4 +71,46 @@ const patrol=document.createElement('button');patrol.className='full patrol-btn'
 patrol.onclick=()=>{const u=units[selectedUnit],d=u.driver;if(d.mode==='respond'){log(u.id+' is responding and cannot patrol.');return}if(d.mode==='patrol'){travel(d,nearest(u.x,u.y),'return');log(u.id+' returning to station.')}else{randomDestination(d);log(u.id+' starting city patrol.')}render()};
 let previous=performance.now();function frame(now){const dt=Math.min(.05,(now-previous)/1000);previous=now;const menu=document.getElementById('mainMenu');if(!paused&&(!menu||menu.classList.contains('hidden')))for(const d of [...units.map(u=>u.driver),...traffic])moveDriver(d,dt);positionVehicles();requestAnimationFrame(frame)}requestAnimationFrame(frame);
 render();document.getElementById('trafficVersion').textContent='TRAFFIC v0.8 • '+traffic.length+' PNG CARS';log('Traffic routing: normal traffic obeys directional streets; emergency response can use restricted directions. '+traffic.length+' civilian PNG cars. Emergency units at stations.');
+</script><style id="call-ui-style">
+#callPanel{background:#101f30;border:1px solid #41637b;border-radius:10px;padding:9px;margin-bottom:12px;color:#e7f4ff}
+#callPhone{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;background:#243348;border:1px solid #66849d;border-radius:9px;padding:9px;color:white}
+#callPhone.ringing{animation:callVibrate .38s infinite}
+#callPhone.answered{background:#16633e;border-color:#46db87}
+#callPhone .phoneSymbol{font-size:27px}
+@keyframes callVibrate{0%,100%{transform:translateX(0)}25%{transform:translateX(-2px)}75%{transform:translateX(2px)}}
+#callTranscript{max-height:150px;overflow:auto;display:flex;flex-direction:column;gap:6px;margin:9px 0;font-size:12px}
+.callBubble{background:#263b53;border-radius:10px;padding:7px 9px;line-height:1.4}
+.callBubble.operator{background:#164c42;align-self:flex-end}
+#callQuestions{display:grid;gap:5px}#callQuestions button{font-size:12px;text-align:left;padding:7px;background:#263f56;border:1px solid #4a7590;border-radius:6px;color:#fff}
+#callAddress{font-size:12px;color:#a4e7c4;margin-top:7px}
+</style>
+<script id="call-engine">
+(function(){
+const aside=document.querySelector('main > aside');
+if(!aside)return;
+const panel=document.createElement('div');panel.id='callPanel';
+panel.innerHTML='<button id="callPhone" type="button"><span class="phoneSymbol">☎</span><span id="callStatus">WAITING FOR CALL</span><span id="callAction">—</span></button><div id="callTranscript" aria-live="polite"></div><div id="callQuestions"></div><div id="callAddress"></div>';
+aside.insertBefore(panel,aside.firstChild);
+const phone=document.getElementById('callPhone'),status=document.getElementById('callStatus'),action=document.getElementById('callAction'),transcript=document.getElementById('callTranscript'),questions=document.getElementById('callQuestions'),address=document.getElementById('callAddress');
+const templates=[
+{title:'Medical emergency',need:'EMS',locs:[7,8,10,11,12,13],opening:'Please help! Someone collapsed and needs help!',details:'They are breathing, but they are barely responding.',hazard:'No fire or weapons. Please send someone quickly.'},
+{title:'Structure fire',need:'Fire',locs:[11,12,13,14,17],opening:'There is smoke coming from a building!',details:'I can see flames near the windows.',hazard:'People might still be inside.'},
+{title:'Bank robbery',need:'Police',locs:[3],opening:'Someone is robbing the bank!',details:'The suspect is still here and people are scared.',hazard:'I think the suspect may have a weapon.'},
+{title:'Traffic collision',need:'Police',locs:[3,7,17],opening:'Two vehicles just crashed!',details:'One driver looks hurt and needs medical help.',hazard:'The vehicles are blocking the street.'},
+{title:'Armed standoff',need:'SWAT',locs:[11,12,13,14],opening:'There is an armed person threatening people!',details:'They are inside the building.',hazard:'I saw a weapon. Please be careful.'}
+];
+let active=null,answered=false,ringTimer=null,callNumber=0;
+function bubble(who,message){const el=document.createElement('div');el.className='callBubble'+(who==='operator'?' operator':'');el.textContent=(who==='operator'?'YOU: ':'CALLER: ')+message;transcript.appendChild(el);transcript.scrollTop=transcript.scrollHeight}
+function ring(){if(active||paused)return;const t=templates[Math.floor(Math.random()*templates.length)];const loc=t.locs[Math.floor(Math.random()*t.locs.length)];active={...t,loc,asked:new Set(),revealed:false,id:++callNumber};answered=false;phone.className='ringing';status.textContent='INCOMING 911 CALL';action.textContent='ANSWER';transcript.innerHTML='';questions.innerHTML='';address.textContent='';if(navigator.vibrate)navigator.vibrate([160,100,160]);log('Incoming 911 call. Answer the phone.')}
+function ask(k,label,reply){if(!active||!answered||active.asked.has(k))return;active.asked.add(k);bubble('operator',label);bubble('caller',reply);if(k==='address'){active.revealed=true;address.textContent='DISPATCH ADDRESS: '+locations[active.loc][0];const inc={id:Date.now()+active.id,title:active.title,need:active.need,loc:active.loc};incidents.push(inc);selectIncident(inc.id);log('Address confirmed: '+locations[active.loc][0]+'. Select a responding unit.')}showQuestions()}
+function showQuestions(){questions.innerHTML='';if(!active||!answered)return;const opts=[['where','What is the address or location?', 'I am at '+locations[active.loc][0]+'.'],['what','Tell me exactly what happened.',active.details],['danger','Is anyone in immediate danger?',active.hazard],['injury','Is anyone injured or having trouble breathing?',active.need==='EMS'?'Yes, they need medical attention.':active.title==='Traffic collision'?'One person may be injured.':'I am not sure. Please send help.']];for(const [k,q,r] of opts){if(active.asked.has(k))continue;const btn=document.createElement('button');btn.type='button';btn.textContent=q;btn.onclick=()=>ask(k==='where'?'address':k,q,r);questions.appendChild(btn)}}
+phone.onclick=()=>{if(!active){ring();return}if(answered)return;answered=true;phone.className='answered';status.textContent='CALL CONNECTED';action.textContent='LIVE';bubble('operator','911, what is your emergency?');bubble('caller',active.opening);showQuestions()};
+const originalNewCall=newCall;
+newCall=function(){if(active){log('Finish the current call before taking another.');return}ring()};
+document.getElementById('newcall').onclick=newCall;
+const oldDispatch=dispatch;
+dispatch=function(){if(active&&!active.revealed){log('Ask the caller for the address before dispatching.');return}const inc=incidents.find(x=>x.id===selectedIncident);if(!inc){log('Answer a call and confirm its address first.');return}oldDispatch();if(active&&active.revealed&&inc.loc===active.loc){bubble('operator','Help is on the way. Stay somewhere safe.');status.textContent='CALL COMPLETED';action.textContent='✓';active=null;answered=false;questions.innerHTML='';clearTimeout(ringTimer);ringTimer=setTimeout(()=>{phone.className='';status.textContent='WAITING FOR CALL';action.textContent='—';ring()},12000)}};
+document.getElementById('dispatch').onclick=dispatch;
+incidents=[];selectedIncident=null;render();ring();
+})();
 </script><div id="mainMenu"><div class="menuSide"><h1>911 COMMAND</h1><h2>CITY DISPATCH</h2><button class="primary" id="menuPlay">▶ PLAY GAME</button><button id="menuCampaign">CAMPAIGN</button><button id="menuOptions">OPTIONS</button><button id="menuCredits">CREDITS</button><button class="danger" id="menuExit">EXIT</button><div id="menuNotice">Emergency Dispatch • Prototype v0.3</div></div><div class="menuCity" role="img" aria-label="Nine-block city map"></div></div><script>document.getElementById('menuPlay').onclick=()=>document.getElementById('mainMenu').classList.add('hidden');document.getElementById('menuCampaign').onclick=()=>document.getElementById('menuNotice').textContent='Campaign mode is planned for a future update.';document.getElementById('menuOptions').onclick=()=>document.getElementById('menuNotice').textContent='Map zoom and simulation speed are available during gameplay.';document.getElementById('menuCredits').onclick=()=>document.getElementById('menuNotice').textContent='911 COMMAND • MJC game project';document.getElementById('menuExit').onclick=()=>{document.getElementById('menuNotice').textContent='Use Android Back or close the app to exit.'};document.addEventListener('keydown',e=>{if(e.key==='Escape'||e.key==='Backspace')document.getElementById('mainMenu').classList.remove('hidden')});</script></body></html>
