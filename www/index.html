@@ -1,10 +1,10 @@
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>911 COMMAND</title><style>
 *{box-sizing:border-box}body{margin:0;background:#09111d;color:#e9f3ff;font:14px system-ui;overflow:hidden}header{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;background:#152337;border-bottom:2px solid #da4141}header b{font-size:21px;letter-spacing:1px}main{height:calc(100dvh - 44px);display:grid;grid-template-columns:minmax(160px,22%) minmax(0,1fr) minmax(175px,23%)}aside{background:#112136;padding:10px;overflow:auto}h3{margin:4px 0 10px;color:#87c8ff;font-size:13px}.card{background:#1c3048;border:1px solid #395875;border-radius:8px;padding:9px;margin:7px 0}button{color:white;background:#274564;border:1px solid #557999;border-radius:6px;padding:9px;cursor:pointer;font-weight:650}button:active{background:#386c9d}.full{display:block;width:100%;margin:5px 0;text-align:left}.chosen{outline:2px solid #5fd6ff}.red{border-left:4px solid #f45a53}.green{background:#146a36;width:100%;font-size:17px}.muted{font-size:12px;color:#bbcadc}.map{position:relative;overflow:hidden;background:#0d1724;touch-action:none}.world{position:absolute;width:100%;height:100%;transform-origin:0 0;will-change:transform}.world img{display:block;width:100%;height:100%;user-select:none;pointer-events:none}.overlay{position:absolute;inset:0;pointer-events:none}.hotspot{position:absolute;border:0;background:transparent;pointer-events:auto;padding:0}.hotspot.active{z-index:30;border:2px solid #ff4c46;border-radius:50%;box-shadow:0 0 13px #ff3e38;background:#ff4c4633;animation:pulse 1s infinite alternate}.hotspot.selected{outline:2px solid #6ed5ff}.hotspot span{position:absolute;left:50%;top:-18px;transform:translateX(-50%);background:#ba2e31;padding:2px 5px;border-radius:4px;white-space:nowrap;font-size:10px}@keyframes pulse{to{box-shadow:0 0 24px #ff3e38}}.vehicle{position:absolute;transform:translate(-50%,-50%);font-size:clamp(14px,2vw,25px);filter:drop-shadow(1px 2px 2px #000);transition:left 3s linear,top 3s linear}.tools{position:absolute;bottom:9px;right:9px;display:flex;gap:5px}.tools button{background:#142c47e8}.radio{font-size:12px;max-height:135px;overflow:auto;line-height:1.6}.row{display:flex;gap:5px}.row button{flex:1}@media(max-width:750px){header{height:36px}main{height:calc(100dvh - 36px);grid-template-columns:135px minmax(0,1fr) 150px}aside{padding:5px}button{padding:6px;font-size:11px}header b{font-size:15px}.card{padding:6px}.muted{font-size:10px}}
-</style><style id="menu-style">#mainMenu{position:fixed;inset:0;z-index:50;display:grid;grid-template-columns:minmax(220px,34%) 1fr;background:#07111eea;color:#fff}#mainMenu.hidden{display:none}#mainMenu .menuSide{padding:clamp(12px,3vw,40px);background:linear-gradient(90deg,#08101cf5,#101d30ee);display:flex;flex-direction:column;justify-content:center;gap:9px;overflow:auto}#mainMenu h1{font-size:clamp(26px,5vw,65px);margin:0;line-height:1;color:#fff;text-shadow:2px 3px #b22b35}#mainMenu h2{margin:0 0 16px;font-size:clamp(13px,2vw,23px);color:#8ccfff;letter-spacing:3px}#mainMenu button{display:block;width:100%;text-align:center;font-size:clamp(13px,1.6vw,22px);padding:clamp(8px,1.5vh,17px);border:2px solid #388cc6;background:linear-gradient(#203f61,#0d243f);border-radius:9px}#mainMenu button.primary{background:linear-gradient(#14a53a,#07551e);border-color:#5dff87}#mainMenu button.danger{background:linear-gradient(#952e35,#4c111c);border-color:#ff6c6c}#mainMenu .menuCity{background:linear-gradient(90deg,#07111d 0%,transparent 18%),url('assets/cities/map_x01.png') center/contain no-repeat,#08111d}#menuNotice{font-size:12px;color:#b7d2e7;min-height:20px}@media(max-width:700px){#mainMenu{grid-template-columns:40% 60%}#mainMenu .menuSide{padding:9px;gap:4px}#mainMenu h2{margin-bottom:4px}#mainMenu button{padding:5px}}</style></head><body><header><b>911 COMMAND</b><span id="time">DAY 1 • 08:00</span><span id="status">0 ACTIVE CALLS</span><span id="trafficVersion" style="font-size:10px;color:#9de9bd">TRAFFIC v1.4</span></header><main><aside><h3>INCOMING CALLS</h3><div id="calls"></div><button class="full" id="newcall">+ SIMULATE 911 CALL</button><h3>RADIO TRAFFIC</h3><div class="card radio" id="radio"></div></aside><section class="map" id="map"><div class="world" id="world"><img src="assets/cities/map_x01.png" alt="Nine-block city map" id="city"><div class="overlay" id="overlay"></div></div><div class="tools"><button id="minus">−</button><button id="reset">FIT</button><button id="plus">+</button></div></section><aside><h3>DISPATCH UNITS</h3><div id="units"></div><div class="card red"><strong id="detail">Select an incident</strong><div class="muted" id="description">Select a call, choose a unit, then tap DISPATCH.</div></div><button class="green" id="dispatch">DISPATCH SELECTED</button><div id="dispatchRoster"></div><button id="urgentDispatch" class="full" type="button">⚡ SPEED UP RESPONDERS</button><div id="emergencyClock" class="card red">NO ACTIVE TIMER</div><div class="row"><button id="pause">PAUSE</button><button id="speed">1×</button></div><p class="muted" id="report">Resolved: 0</p></aside></main><script>
+</style><style id="menu-style">#mainMenu{position:fixed;inset:0;z-index:50;display:grid;grid-template-columns:minmax(220px,34%) 1fr;background:#07111eea;color:#fff}#mainMenu.hidden{display:none}#mainMenu .menuSide{padding:clamp(12px,3vw,40px);background:linear-gradient(90deg,#08101cf5,#101d30ee);display:flex;flex-direction:column;justify-content:center;gap:9px;overflow:auto}#mainMenu h1{font-size:clamp(26px,5vw,65px);margin:0;line-height:1;color:#fff;text-shadow:2px 3px #b22b35}#mainMenu h2{margin:0 0 16px;font-size:clamp(13px,2vw,23px);color:#8ccfff;letter-spacing:3px}#mainMenu button{display:block;width:100%;text-align:center;font-size:clamp(13px,1.6vw,22px);padding:clamp(8px,1.5vh,17px);border:2px solid #388cc6;background:linear-gradient(#203f61,#0d243f);border-radius:9px}#mainMenu button.primary{background:linear-gradient(#14a53a,#07551e);border-color:#5dff87}#mainMenu button.danger{background:linear-gradient(#952e35,#4c111c);border-color:#ff6c6c}#mainMenu .menuCity{background:linear-gradient(90deg,#07111d 0%,transparent 18%),url('assets/cities/file_0000000087cc81f595ecfd4a2a844b42.png') center/contain no-repeat,#08111d}#menuNotice{font-size:12px;color:#b7d2e7;min-height:20px}@media(max-width:700px){#mainMenu{grid-template-columns:40% 60%}#mainMenu .menuSide{padding:9px;gap:4px}#mainMenu h2{margin-bottom:4px}#mainMenu button{padding:5px}}</style></head><body><header><b>911 COMMAND</b><span id="time">DAY 1 • 08:00</span><span id="status">0 ACTIVE CALLS</span><span id="trafficVersion" style="font-size:10px;color:#9de9bd">TRAFFIC v1.4</span></header><main><aside><h3>INCOMING CALLS</h3><div id="calls"></div><button class="full" id="newcall">+ SIMULATE 911 CALL</button><h3>RADIO TRAFFIC</h3><div class="card radio" id="radio"></div></aside><section class="map" id="map"><div class="world" id="world"><img src="assets/cities/file_0000000087cc81f595ecfd4a2a844b42.png" alt="Nine-block city map" id="city"><div class="overlay" id="overlay"></div></div><div class="tools"><button id="minus">−</button><button id="reset">FIT</button><button id="plus">+</button></div></section><aside><h3>DISPATCH UNITS</h3><div id="units"></div><div class="card red"><strong id="detail">Select an incident</strong><div class="muted" id="description">Select a call, choose a unit, then tap DISPATCH.</div></div><button class="green" id="dispatch">DISPATCH SELECTED</button><div id="dispatchRoster"></div><button id="urgentDispatch" class="full" type="button">⚡ SPEED UP RESPONDERS</button><div id="emergencyClock" class="card red">NO ACTIVE TIMER</div><div class="row"><button id="pause">PAUSE</button><button id="speed">1×</button></div><p class="muted" id="report">Resolved: 0</p></aside></main><script>
 'use strict';
 const $=id=>document.getElementById(id),map=$('map'),world=$('world');
-const locations=[['Police Department',.18,.665],['Fire Department',.42,.665],['Hospital Ambulance Bay',.84,.49],['Rivermere Bank',.85,.335],['Club Bass Jet Propulsion Laboratory',.86,.14],['Grocery Store',.60,.335],['Rivermere Diner',.69,.665],['High School',.23,.49],['Rivermere Hospital',.84,.49],['Pharmacy',.88,.665],['Crestwood Homes',.20,.84],['Pinecrest Homes',.30,.13],['Maple Grove Homes',.64,.13],['Cedar Hill Homes',.67,.22],['Quick Mart Deli',.30,.335],['Town Park',.52,.49],['Park Lake',.58,.49],['Riverdale Gas',.15,.335]];
-const units=[['P-1','Police','🚓',.17,.72],['P-2','Police','🚓',.21,.72],['F-1','Fire','🚒',.41,.72],['F-2','Fire','🚒',.45,.72],['M-1','EMS','🚑',.84,.60]].map(x=>({id:x[0],type:x[1],emoji:x[2],x:x[3],y:x[4],busy:false}));
+const locations=[['Police Department',.44,.59],['Fire Department',.56,.59],['Hospital Ambulance Bay',.44,.49],['Bank',.56,.39],['Northwest Homes',.18,.19],['Grocery Store',.44,.39],['Southeast Homes',.83,.83],['West Homes',.18,.5],['Hospital',.44,.49],['Gas Station',.56,.59],['Southwest Homes',.18,.83],['North Homes',.50,.18],['Northeast Homes',.83,.18],['East Homes',.83,.5],['South Homes',.50,.83],['Bank',.56,.39],['Central Homes',.18,.5],['Gas Station',.56,.59]];
+const units=[['P-1','Police','🚓',.42,.65],['P-2','Police','🚓',.45,.65],['F-1','Fire','🚒',.54,.65],['F-2','Fire','🚒',.57,.65],['M-1','EMS','🚑',.43,.34]].map(x=>({id:x[0],type:x[1],emoji:x[2],x:x[3],y:x[4],busy:false}));
 const scenarios=[['Bank robbery','Police',[3]],['Structure fire','Fire',[11,12,13,14,17]],['Medical emergency','EMS',[7,8,10,11,12,13]],['Suspicious kidnapping','Police',[11,12,13,14]],['Armed standoff','SWAT',[11,12,13,14]],['Traffic collision','Police',[3,7,17]]];
 let incidents=[],selectedUnit=0,selectedIncident=null,resolved=0,paused=false,speed=1,minute=480,zoom=1,tx=0,ty=0;
 function log(s){$('radio').innerHTML='<div>• '+s+'</div>'+$('radio').innerHTML}
@@ -31,7 +31,7 @@ $('city').onerror=()=>log('ERROR: city_map.png could not be loaded.');render();l
    Adjust road centers after measuring the underlying city image. */
 // Road v2: calibrated against 3x3 city artwork. Four north/south and east/west arterials.
 // Each painted street has TWO directions; arrows belong to lanes, not entire streets.
-const roadX=[.026,.36,.56,.72,.97],roadY=[.067,.152,.267,.40,.597,.733,.82,.914],lane=.012;
+const lane=.012;
 const rnd=n=>Math.floor(Math.random()*n),key=(a,b)=>a+','+b;
 const fleetAssets={Police:'police/police_01.png',Fire:'fire/fire_01.png',EMS:'ambulance/ambulance_01.png',SWAT:'special/swat.png',Detective:'undercover/uc_01.png'};
 const civilianAssets=['civilian/pickup_white.png','civilian/pickup_blue.png','civilian/pickup_red.png','civilian/suv_gray.png','civilian/suv_black.png','civilian/taxi_01.png','civilian/taxi_02.png','civilian/taxi_03.png','civilian/taxi_04.png'];
@@ -41,39 +41,34 @@ function spriteElement(d){const img=document.createElement('img');img.src=sprite
 const traffic=[];
 // Road-centerline graph surveyed against map_x01.png (1248px square source).
 // Coordinates are normalized; only explicit street connections are driveable.
-const roadPoints=[
-[32,333],[145,333],[450,333],[620,333],[900,333],[950,333],[1210,333],
-[32,500],[450,500],[620,500],[900,500],[1210,500],
-[32,745],[450,745],[690,745],[820,745],[1210,745],
-[32,915],[390,915],[450,915],[690,915],[960,915],[1210,915],
-[32,1025],[390,1025],[450,1025],[690,1025],[960,1025],[1210,1025],
-[32,1140],[390,1140],[450,1140],[690,1140],[960,1140],[1210,1140],
-[145,86],[620,86],[900,86],[145,190],[620,190],[900,190],
-[145,333],[620,333],[900,333]
-];
-const roadEdges=[
-[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],
-[7,8],[8,9],[9,10],[10,11],
-[12,13],[13,14],[14,15],[15,16],
-[17,18],[18,19],[19,20],[20,21],[21,22],
-[23,24],[24,25],[25,26],[26,27],[27,28],
-[29,30],[30,31],[31,32],[32,33],[33,34],
-[0,7],[7,12],[12,17],[17,23],[23,29],
-[2,8],[8,13],[13,19],[19,25],[25,31],
-[3,9],[9,14],[14,20],[20,26],[26,32],
-[4,10],[10,15],[15,21],[21,27],[27,33],
-[6,11],[11,16],[16,22],[22,28],[28,34],
-[35,38],[38,1],[36,39],[39,3],[37,40],[40,4]
-];
-const graphNodes=roadPoints.map(([x,y],i)=>({a:i,b:0,x:x/1248,y:y/1248}));
+// Final nine-block map: 4 horizontal and 4 vertical streets, at the actual asphalt centers.
+// Coordinates measured in the original 1254 x 1254 artwork, normalized for WebView.
+const mapRoadXs=[37,430,815,1210].map(x=>x/1254);
+const mapRoadYs=[37,430,815,1210].map(y=>y/1254);
+const graphNodes=[];
+for(let y=0;y<4;y++)for(let x=0;x<4;x++)graphNodes.push({a:y*4+x,b:0,x:mapRoadXs[x],y:mapRoadYs[y]});
 const adjacency=graphNodes.map(()=>[]);
-for(const [a,b] of roadEdges){const w=Math.hypot(graphNodes[a].x-graphNodes[b].x,graphNodes[a].y-graphNodes[b].y);adjacency[a].push([b,w]);adjacency[b].push([a,w])}
-// Merge coincident junctions so neighborhood roads connect to the main streets.
-for(let i=0;i<graphNodes.length;i++)for(let j=i+1;j<graphNodes.length;j++)if(Math.hypot(graphNodes[i].x-graphNodes[j].x,graphNodes[i].y-graphNodes[j].y)<.002){adjacency[i].push([j,.00001]);adjacency[j].push([i,.00001])}
+for(let y=0;y<4;y++)for(let x=0;x<4;x++){
+ const a=y*4+x;
+ for(const b of [x<3?a+1:-1,y<3?a+4:-1])if(b>=0){
+ const w=Math.hypot(graphNodes[a].x-graphNodes[b].x,graphNodes[a].y-graphNodes[b].y);
+ adjacency[a].push([b,w]);adjacency[b].push([a,w]);
+ }
+}
 function node(a,b){return graphNodes[a]||graphNodes[0]}
 function nearest(x,y){let best=graphNodes[0],dist=Infinity;for(const n of graphNodes){const d=(n.x-x)**2+(n.y-y)**2;if(d<dist){best=n;dist=d}}return best}
-function route(start,end,emergency=false){const dist=graphNodes.map(()=>Infinity),prev=graphNodes.map(()=>-1),used=new Set();dist[start.a]=0;while(used.size<graphNodes.length){let u=-1,best=Infinity;for(let i=0;i<dist.length;i++)if(!used.has(i)&&dist[i]<best){u=i;best=dist[i]}if(u<0||u===end.a)break;used.add(u);for(const [v,w] of adjacency[u])if(dist[u]+w<dist[v]){dist[v]=dist[u]+w;prev[v]=u}}if(!isFinite(dist[end.a]))return[start];const ids=[];for(let i=end.a;i!==-1;i=prev[i])ids.push(i);return ids.reverse().map(i=>graphNodes[i])}
-function lanePoint(from,to,t){const dx=to.x-from.x,dy=to.y-from.y,len=Math.hypot(dx,dy)||1;return {x:from.x+dx*t+dy/len*lane,y:from.y+dy*t-dx/len*lane,angle:Math.atan2(dy,dx)*180/Math.PI}}
+function route(start,end,emergency=false){
+ const dist=graphNodes.map(()=>Infinity),prev=graphNodes.map(()=>-1),visited=new Set();dist[start.a]=0;
+ while(visited.size<graphNodes.length){
+ let u=-1,best=Infinity;for(let i=0;i<dist.length;i++)if(!visited.has(i)&&dist[i]<best){best=dist[i];u=i}
+ if(u<0||u===end.a)break;visited.add(u);
+ for(const [v,w] of adjacency[u])if(dist[u]+w<dist[v]){dist[v]=dist[u]+w;prev[v]=u}
+ }
+ if(!isFinite(dist[end.a]))return[start];
+ const ids=[];for(let i=end.a;i!==-1;i=prev[i])ids.push(i);
+ return ids.reverse().map(i=>graphNodes[i]);
+}
+function lanePoint(from,to,t){const dx=to.x-from.x,dy=to.y-from.y,len=Math.hypot(dx,dy)||1;return {x:from.x+dx*t-dy/len*lane,y:from.y+dy*t+dx/len*lane,angle:Math.atan2(dy,dx)*180/Math.PI}}
 function smoothPoint(path,i,t){const from=path[i],to=path[i+1],p=lanePoint(from,to,t);if(i>0&&t<.12){const prev=lanePoint(path[i-1],from,1),s=t/.12,k=s*s*(3-2*s);p.x=prev.x*(1-k)+p.x*k;p.y=prev.y*(1-k)+p.y*k;p.angle=prev.angle+(p.angle-prev.angle)*k}if(i+2<path.length&&t>.88){const next=lanePoint(to,path[i+2],0),s=(t-.88)/.12,k=s*s*(3-2*s);p.x=p.x*(1-k)+next.x*k;p.y=p.y*(1-k)+next.y*k;p.angle=p.angle+(next.angle-p.angle)*k}return p}
 function makeDriver(u,civilian=false){const start=nearest(u.x,u.y);return {unit:u,civilian,at:start,path:[],index:0,progress:0,x:civilian?start.x:u.x,y:civilian?start.y:u.y,angle:0,mode:civilian?'traffic':'station',speed:civilian?.10+Math.random()*.035:.22,incident:null,wait:0}}
 units.forEach(u=>{u.driver=makeDriver(u)});
