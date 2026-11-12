@@ -1,0 +1,31 @@
+name: Extract Corrected 911 Vehicle Pack
+on:
+  push:
+    branches: [developer]
+    paths:
+      - 'www/assets/cars/911_command_vehicles_precision_cut.zip'
+      - '.github/workflows/extract-vehicle-pack.yml'
+  workflow_dispatch:
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: developer
+      - name: Extract full-size and game-size transparent vehicles
+        run: |
+          set -e
+          mkdir -p www/assets/cars/precision
+          unzip -o www/assets/cars/911_command_vehicles_precision_cut.zip -d www/assets/cars/precision
+          test -f www/assets/cars/precision/manifest.json
+          test -f www/assets/cars/precision/game/police/police_cruiser.png
+          git add www/assets/cars/precision
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git diff --cached --quiet; then
+            git commit -m "Extract corrected 21 top-down vehicle sprites"
+            git push origin developer
+          fi
