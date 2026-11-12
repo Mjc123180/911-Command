@@ -1,0 +1,29 @@
+name: Extract Corrected 911 COMMAND Vehicles
+on:
+  push:
+    branches: [developer]
+    paths:
+      - 'www/assets/cars/911_command_vehicles_precision_cut.zip'
+      - '.github/workflows/extract-corrected-vehicles.yml'
+  workflow_dispatch:
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: developer
+      - name: Extract corrected game sprites
+        run: |
+          set -e
+          unzip -t www/assets/cars/911_command_vehicles_precision_cut.zip
+          mkdir -p www/assets/cars/corrected
+          unzip -o www/assets/cars/911_command_vehicles_precision_cut.zip 'game/*' 'masters/*' 'manifest.json' -d www/assets/cars/corrected/
+          test -f www/assets/cars/corrected/game/police/police_cruiser.png
+          test -f www/assets/cars/corrected/manifest.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add www/assets/cars/corrected
+          git diff --cached --quiet || (git commit -m "Extract corrected transparent vehicle sprites" && git push origin developer)
