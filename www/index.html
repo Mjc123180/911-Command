@@ -31,7 +31,7 @@ $('city').onerror=()=>log('ERROR: city_map.png could not be loaded.');render();l
    Adjust road centers after measuring the underlying city image. */
 // Road v2: calibrated against 3x3 city artwork. Four north/south and east/west arterials.
 // Each painted street has TWO directions; arrows belong to lanes, not entire streets.
-const roadX=[.045,.345,.655,.955],roadY=[.045,.345,.655,.955],lane=.011;
+const roadX=[.026,.36,.56,.72,.97],roadY=[.067,.152,.267,.40,.597,.733,.82,.914],lane=.012;
 const rnd=n=>Math.floor(Math.random()*n),key=(a,b)=>a+','+b;
 const fleetAssets={Police:'police/police_01.png',Fire:'fire/fire_01.png',EMS:'ambulance/ambulance_01.png',SWAT:'special/swat.png',Detective:'undercover/uc_01.png'};
 const civilianAssets=['civilian/pickup_white.png','civilian/pickup_blue.png','civilian/pickup_red.png','civilian/suv_gray.png','civilian/suv_black.png','civilian/taxi_01.png','civilian/taxi_02.png','civilian/taxi_03.png','civilian/taxi_04.png'];
@@ -117,7 +117,7 @@ if(d.progress>=stopLineProgress-.035 && !d.crossing){
 }
 if(d.crossing && d.index+2<d.path.length){
  const next=d.path[d.index+2];
- if(to.a-from.a!==next.a-to.a||to.b-from.b!==next.b-to.b)factor=Math.min(factor,.6);
+ if(Math.abs(Math.atan2(next.y-to.y,next.x-to.x)-Math.atan2(to.y-from.y,to.x-from.x))>.3)factor=Math.min(factor,.6);
 }
 {
 const p=smoothPoint(d.path,d.index,d.progress);
