@@ -5,6 +5,7 @@ on:
     branches: [developer]
     paths:
       - 'www/assets/cars/911_command_vehicle_sprites.zip'
+      - '.github/workflows/extract-vehicle-assets.yml'
 permissions:
   contents: write
 jobs:
