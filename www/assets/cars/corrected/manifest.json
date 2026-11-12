@@ -1,0 +1,191 @@
+[
+  {
+    "name": "police_cruiser",
+    "game_path": "game/police/police_cruiser.png",
+    "master_path": "masters/police/police_cruiser_master.png",
+    "canvas": [
+      160,
+      64
+    ]
+  },
+  {
+    "name": "unmarked_police",
+    "game_path": "game/police/unmarked_police.png",
+    "master_path": "masters/police/unmarked_police_master.png",
+    "canvas": [
+      160,
+      64
+    ]
+  },
+  {
+    "name": "k9",
+    "game_path": "game/police/k9.png",
+    "master_path": "masters/police/k9_master.png",
+    "canvas": [
+      160,
+      64
+    ]
+  },
+  {
+    "name": "state_trooper",
+    "game_path": "game/police/state_trooper.png",
+    "master_path": "masters/police/state_trooper_master.png",
+    "canvas": [
+      160,
+      64
+    ]
+  },
+  {
+    "name": "motorcycle",
+    "game_path": "game/police/motorcycle.png",
+    "master_path": "masters/police/motorcycle_master.png",
+    "canvas": [
+      128,
+      64
+    ]
+  },
+  {
+    "name": "police_911",
+    "game_path": "game/police/police_911.png",
+    "master_path": "masters/police/police_911_master.png",
+    "canvas": [
+      160,
+      64
+    ]
+  },
+  {
+    "name": "ladder_truck",
+    "game_path": "game/fire/ladder_truck.png",
+    "master_path": "masters/fire/ladder_truck_master.png",
+    "canvas": [
+      192,
+      80
+    ]
+  },
+  {
+    "name": "fire_rescue",
+    "game_path": "game/fire/fire_rescue.png",
+    "master_path": "masters/fire/fire_rescue_master.png",
+    "canvas": [
+      192,
+      80
+    ]
+  },
+  {
+    "name": "ambulance",
+    "game_path": "game/medical/ambulance.png",
+    "master_path": "masters/medical/ambulance_master.png",
+    "canvas": [
+      160,
+      64
+    ]
+  },
+  {
+    "name": "ems_suv",
+    "game_path": "game/medical/ems_suv.png",
+    "master_path": "masters/medical/ems_suv_master.png",
+    "canvas": [
+      160,
+      64
+    ]
+  },
+  {
+    "name": "ems_unit",
+    "game_path": "game/medical/ems_unit.png",
+    "master_path": "masters/medical/ems_unit_master.png",
+    "canvas": [
+      160,
+      64
+    ]
+  },
+  {
+    "name": "bomb_squad_truck",
+    "game_path": "game/special/bomb_squad_truck.png",
+    "master_path": "masters/special/bomb_squad_truck_master.png",
+    "canvas": [
+      192,
+      80
+    ]
+  },
+  {
+    "name": "bomb_squad_suv",
+    "game_path": "game/special/bomb_squad_suv.png",
+    "master_path": "masters/special/bomb_squad_suv_master.png",
+    "canvas": [
+      160,
+      64
+    ]
+  },
+  {
+    "name": "swat_armored",
+    "game_path": "game/special/swat_armored.png",
+    "master_path": "masters/special/swat_armored_master.png",
+    "canvas": [
+      192,
+      80
+    ]
+  },
+  {
+    "name": "swat_suv",
+    "game_path": "game/special/swat_suv.png",
+    "master_path": "masters/special/swat_suv_master.png",
+    "canvas": [
+      160,
+      64
+    ]
+  },
+  {
+    "name": "swat_heavy",
+    "game_path": "game/special/swat_heavy.png",
+    "master_path": "masters/special/swat_heavy_master.png",
+    "canvas": [
+      192,
+      80
+    ]
+  },
+  {
+    "name": "mobile_command",
+    "game_path": "game/command/mobile_command.png",
+    "master_path": "masters/command/mobile_command_master.png",
+    "canvas": [
+      192,
+      80
+    ]
+  },
+  {
+    "name": "command_suv",
+    "game_path": "game/command/command_suv.png",
+    "master_path": "masters/command/command_suv_master.png",
+    "canvas": [
+      160,
+      64
+    ]
+  },
+  {
+    "name": "fbi_suv",
+    "game_path": "game/federal/fbi_suv.png",
+    "master_path": "masters/federal/fbi_suv_master.png",
+    "canvas": [
+      160,
+      64
+    ]
+  },
+  {
+    "name": "fbi_van",
+    "game_path": "game/federal/fbi_van.png",
+    "master_path": "masters/federal/fbi_van_master.png",
+    "canvas": [
+      192,
+      80
+    ]
+  },
+  {
+    "name": "cia_suv",
+    "game_path": "game/federal/cia_suv.png",
+    "master_path": "masters/federal/cia_suv_master.png",
+    "canvas": [
+      160,
+      64
+    ]
+  }
+]
