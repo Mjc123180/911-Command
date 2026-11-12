@@ -43,7 +43,7 @@ function nearest(x,y){let best=node(0,0),dist=Infinity;for(let a=0;a<4;a++)for(l
 function route(start,end,emergency=false){const visited=new Set(),q=[[start]];while(q.length){const path=q.shift(),n=path[path.length-1];if(n.a===end.a&&n.b===end.b)return path;const k=key(n.a,n.b);if(visited.has(k))continue;visited.add(k);for(const [da,db] of [[1,0],[-1,0],[0,1],[0,-1]]){const a=n.a+da,b=n.b+db;if(a>=0&&a<4&&b>=0&&b<4&&!visited.has(key(a,b)))q.push([...path,node(a,b)])}}return [start]}
 function lanePoint(from,to,t){const dx=to.x-from.x,dy=to.y-from.y,len=Math.hypot(dx,dy)||1;return {x:from.x+dx*t-dy/len*lane,y:from.y+dy*t+dx/len*lane,angle:Math.atan2(dy,dx)*180/Math.PI}}
 function smoothPoint(path,i,t){const from=path[i],to=path[i+1],p=lanePoint(from,to,t);if(i>0&&t<.12){const prev=lanePoint(path[i-1],from,1),s=t/.12,k=s*s*(3-2*s);p.x=prev.x*(1-k)+p.x*k;p.y=prev.y*(1-k)+p.y*k;p.angle=prev.angle+(p.angle-prev.angle)*k}if(i+2<path.length&&t>.88){const next=lanePoint(to,path[i+2],0),s=(t-.88)/.12,k=s*s*(3-2*s);p.x=p.x*(1-k)+next.x*k;p.y=p.y*(1-k)+next.y*k;p.angle=p.angle+(next.angle-p.angle)*k}return p}
-function makeDriver(u,civilian=false){const start=nearest(u.x,u.y);return {unit:u,civilian,at:start,path:[],index:0,progress:0,x:start.x,y:start.y,angle:0,mode:civilian?'traffic':'station',speed:civilian?.033+Math.random()*.009:.055,incident:null,wait:0}}
+function makeDriver(u,civilian=false){const start=nearest(u.x,u.y);return {unit:u,civilian,at:start,path:[],index:0,progress:0,x:civilian?start.x:u.x,y:civilian?start.y:u.y,angle:0,mode:civilian?'traffic':'station',speed:civilian?.033+Math.random()*.009:.055,incident:null,wait:0}}
 units.forEach(u=>{u.driver=makeDriver(u)});
 const civilianColors=Array.from({length:16},(_,i)=>['🚗','🚙','🚕','🚘'][i%4]);
 civilianColors.forEach((emoji,i)=>{const n=node(rnd(4),rnd(4));const d=makeDriver({id:'C-'+(i+1),type:'Civilian',emoji,x:n.x,y:n.y,busy:false},true);d.progress=0;d.wait=i*.28;traffic.push(d)});
@@ -70,8 +70,8 @@ let factor=1;
 const approaching=d.progress>.76;
 const crossKey=key(to.a,to.b);
 if(approaching){
-const holder=intersectionReservations.get(crossKey);
-if(holder&&holder!==d&&holder.index<holder.path.length-1){factor=0}
+const holder=intersectionReservations.get(crossKey);if(holder&&(holder.mode==='station'||holder.mode==='scene'||holder.index>=holder.path.length-1||holder.path[holder.index+1]?.a!==to.a||holder.path[holder.index+1]?.b!==to.b))intersectionReservations.delete(crossKey);
+if(intersectionReservations.has(crossKey)&&intersectionReservations.get(crossKey)!==d){factor=0}
 else if(!holder)intersectionReservations.set(crossKey,d);
 if(d.index+2<d.path.length){const next=d.path[d.index+2];if((to.a-from.a)!==(next.a-to.a)||(to.b-from.b)!==(next.b-to.b))factor=Math.min(factor,.50)}
 }
