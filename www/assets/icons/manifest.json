@@ -1,0 +1,308 @@
+[
+  {
+    "name": "alien_sighting",
+    "path": "assets/icons/alien_sighting.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "arrest_handcuffs",
+    "path": "assets/icons/arrest_handcuffs.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "biohazard",
+    "path": "assets/icons/biohazard.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "business_fire",
+    "path": "assets/icons/business_fire.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "cardiac",
+    "path": "assets/icons/cardiac.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "chemical_spill",
+    "path": "assets/icons/chemical_spill.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "crime_scene",
+    "path": "assets/icons/crime_scene.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "device_bomb",
+    "path": "assets/icons/device_bomb.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "emergency_siren",
+    "path": "assets/icons/emergency_siren.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "firearm_report",
+    "path": "assets/icons/firearm_report.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "flood",
+    "path": "assets/icons/flood.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "forest_fire",
+    "path": "assets/icons/forest_fire.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "general_fire",
+    "path": "assets/icons/general_fire.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "gunshot",
+    "path": "assets/icons/gunshot.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "ice_hazard",
+    "path": "assets/icons/ice_hazard.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "industrial_fire",
+    "path": "assets/icons/industrial_fire.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "lightning_storm",
+    "path": "assets/icons/lightning_storm.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "medical",
+    "path": "assets/icons/medical.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "radiation",
+    "path": "assets/icons/radiation.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "residential_fire",
+    "path": "assets/icons/residential_fire.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "robbery_suspect",
+    "path": "assets/icons/robbery_suspect.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "rockslide",
+    "path": "assets/icons/rockslide.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "sniper_target",
+    "path": "assets/icons/sniper_target.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "snow_storm",
+    "path": "assets/icons/snow_storm.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "timed_bomb_10",
+    "path": "assets/icons/timed_bomb_10.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "timed_bomb_30",
+    "path": "assets/icons/timed_bomb_30.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "tornado",
+    "path": "assets/icons/tornado.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "toxic_hazard",
+    "path": "assets/icons/toxic_hazard.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "ufo_sighting",
+    "path": "assets/icons/ufo_sighting.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "vehicle_collision",
+    "path": "assets/icons/vehicle_collision.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "vehicle_fire",
+    "path": "assets/icons/vehicle_fire.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "vehicle_rollover",
+    "path": "assets/icons/vehicle_rollover.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "warning",
+    "path": "assets/icons/warning.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  },
+  {
+    "name": "wired_bomb",
+    "path": "assets/icons/wired_bomb.png",
+    "size": [
+      256,
+      256
+    ],
+    "transparent": true
+  }
+]
