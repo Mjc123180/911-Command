@@ -4,6 +4,8 @@ on:
     branches: [developer]
     paths:
       - 'www/assets/icons/911_command_icons.zip'
+      - 'www/assets/icons/911_command_icons_ready.zip'
+      - '.github/workflows/extract-incident-icons.yml'
   workflow_dispatch:
 jobs:
   extract:
@@ -17,7 +19,7 @@ jobs:
       - name: Extract incident icon sprites
         run: |
           mkdir -p www/assets/icons
-          unzip -o www/assets/icons/911_command_icons.zip -d www/assets/icons
+          unzip -o www/assets/icons/911_command_icons_ready.zip -d www/assets/icons
           test -f www/assets/icons/manifest.json
           git add www/assets/icons
           git config user.name "github-actions[bot]"
