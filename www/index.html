@@ -188,7 +188,8 @@ const opts=[
 ['time','When did this happen?','Just a few minutes ago. Please hurry.']
 ];
 for(const [k,q,r] of opts){if(active.asked.has(k==='where'?'address':k))continue;const btn=document.createElement('button');btn.type='button';btn.textContent=q;btn.onclick=()=>ask(k==='where'?'address':k,q,r);questions.appendChild(btn)}}
-phone.onclick=()=>{if(!active){ring();return}if(answered)return;answered=true;callRemaining=15;showCallClock();phone.className='answered';status.textContent='CALL CONNECTED';action.textContent='LIVE';bubble('operator','911, what is your emergency?');bubble('caller',active.opening);showQuestions()};
+const answerSfx=new Audio('assets/audio/locrpg-911-whats-your-emergency-104104.mp3');answerSfx.preload='auto';answerSfx.volume=.85;
+phone.onclick=()=>{if(!active){ring();return}if(answered)return;answerSfx.currentTime=0;answerSfx.play().catch(()=>log('911 answer sound unavailable; check assets/audio MP3.'));answered=true;callRemaining=15;showCallClock();phone.className='answered';status.textContent='CALL CONNECTED';action.textContent='LIVE';bubble('operator','911, what is your emergency?');bubble('caller',active.opening);showQuestions()};
 const originalNewCall=newCall;
 newCall=function(){if(active){log('Finish the current call before taking another.');return}ring()};
 document.getElementById('newcall').onclick=newCall;
