@@ -210,9 +210,9 @@ if(inc.deadline<=0){window.dispatchGameOver=true;document.getElementById('firedR
 ensureVehicles();render();document.getElementById('trafficVersion').textContent='TRAFFIC v1.4 • '+traffic.length+' PNG CARS';log('Traffic routing: normal traffic obeys directional streets; emergency response can use restricted directions. '+traffic.length+' civilian PNG cars. Emergency units at stations.');
 </script><style id="call-ui-style">
 #callPanel{background:#101f30;border:1px solid #41637b;border-radius:10px;padding:9px;margin-bottom:12px;color:#e7f4ff}
-#callPhone{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;background:#243348;border:1px solid #66849d;border-radius:9px;padding:9px;color:white}
-#callPhone.ringing{animation:callVibrate .38s infinite}
-#callPhone.answered{background:#16633e;border-color:#46db87}
+#callPhone{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;background:#1456ad;border:2px solid #66b5ff;border-radius:9px;padding:9px;color:white}
+#callPhone.ringing{background:#138344;border-color:#5df0a0;animation:callVibrate .38s infinite}
+#callPhone.answered{background:#b51e2a;border-color:#ff6771}
 #callPhone .phoneSymbol{font-size:27px}
 @keyframes callVibrate{0%,100%{transform:translateX(0)}25%{transform:translateX(-2px)}75%{transform:translateX(2px)}}
 #callTranscript{max-height:150px;overflow:auto;display:flex;flex-direction:column;gap:6px;margin:9px 0;font-size:12px}
@@ -266,7 +266,7 @@ const opts=[
 questions.innerHTML='<select id="dispatcherQuestion" style="width:100%;padding:10px;background:#19334c;color:white"><option value="">SELECT A QUESTION (8)</option>'+opts.filter(([k])=>!active.asked.has(k==='where'?'address':k)).map(([k,q])=>'<option value="'+k+'">'+q+'</option>').join('')+'</select>';questions.querySelector('select').onchange=e=>{const item=opts.find(([k])=>k===e.target.value);if(item)ask(item[0]==='where'?'address':item[1],item[1],item[2])}}
 const answerSfx={play:()=>Promise.resolve(),pause:()=>{},set currentTime(v){}};
 phone.onclick=()=>{if(!active){ring();return}if(answered)return;stopRinging();answerSfx.currentTime=0;answerSfx.play().catch(()=>log('911 greeting sound unavailable.'));answered=true;callRemaining=30;showCallClock();phone.className='answered';status.textContent='CALL CONNECTED';action.textContent='LIVE';bubble('operator','911, what is your emergency?');bubble('caller',active.opening);showQuestions()};
-window.end911CallOnArrival=function(inc){if(!active||!active.dispatched||active.loc!==inc.loc)return;active=null;answered=false;phone.className='';status.textContent='WAITING FOR CALL';action.textContent='—';questions.innerHTML='';showCallClock();clearTimeout(ringTimer);ringTimer=setTimeout(ring,12000)};
+window.end911CallOnArrival=function(inc){if(!active||!active.dispatched||active.loc!==inc.loc)return;active=null;answered=false;stopRinging();phone.className='';status.textContent='WAITING FOR CALL';action.textContent='—';questions.innerHTML='';showCallClock();clearTimeout(ringTimer);ringTimer=setTimeout(ring,12000)};
 const originalNewCall=newCall;
 newCall=function(){if(active){log('Finish the current call before taking another.');return}ring()};
 document.getElementById('newcall').onclick=newCall;
